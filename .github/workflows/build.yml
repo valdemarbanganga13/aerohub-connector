@@ -1,4 +1,4 @@
-name: Construir Conector AeroHub
+name: Build AeroHub Final
 on:
   push:
     tags:
@@ -19,21 +19,16 @@ jobs:
         with:
           node-version: 20
 
-      - name: Localizar e Instalar
-        shell: bash
+      - name: Install and Build
         run: |
-          # Procura onde está o ficheiro package.json e entra nessa pasta
-          TARGET_DIR=$(find . -name package.json -not -path "*/node_modules/*" -exec dirname {} \;)
-          echo "Projeto encontrado em: $TARGET_DIR"
-          cd "$TARGET_DIR"
           npm install
           npm run build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload do Instalador
+      - name: Upload Release
         uses: softprops/action-gh-release@v2
         with:
-          files: "**/*.exe" # Procura qualquer .exe gerado em qualquer pasta
+          files: dist/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
