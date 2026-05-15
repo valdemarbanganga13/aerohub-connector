@@ -1,4 +1,4 @@
-name: Build AeroHub Connector
+name: Construir Conector AeroHub
 on:
   push:
     tags:
@@ -22,7 +22,9 @@ jobs:
       - name: Install and Build
         shell: bash
         run: |
-          cd aerohub-connector
+          # Este comando procura a pasta onde está o package.json e entra nela
+          target_dir=$(find . -name package.json -not -path "*/node_modules/*" -exec dirname {} \;)
+          cd "$target_dir"
           npm install
           npm run build
         env:
@@ -31,6 +33,6 @@ jobs:
       - name: Upload Release
         uses: softprops/action-gh-release@v2
         with:
-          files: aerohub-connector/dist/*.exe
+          files: "**/*.exe" # Procura o instalador em qualquer pasta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
