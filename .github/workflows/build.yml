@@ -1,1 +1,36 @@
+name: Build AeroHub Connector
+on:
+  push:
+    tags:
+      - 'v*' # O robô vai trabalhar sempre que criares uma "versão" nova
 
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: |
+          cd aerohub-connector
+          npm install
+
+      - name: Build Electron App
+        run: |
+          cd aerohub-connector
+          npm run build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: aerohub-connector/dist/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
