@@ -2,7 +2,7 @@ name: Build AeroHub Connector
 on:
   push:
     tags:
-      - 'v*' # O robô vai trabalhar sempre que criares uma "versão" nova
+      - 'v*'
 
 jobs:
   release:
@@ -18,12 +18,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd aerohub-connector
+          cd "aerohub-connector"
           npm install
 
       - name: Build Electron App
         run: |
-          cd aerohub-connector
+          cd "aerohub-connector"
           npm run build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
