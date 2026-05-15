@@ -1,4 +1,4 @@
-name: Build AeroHub Final
+name: Build AeroHub Windows Only
 on:
   push:
     tags:
@@ -22,7 +22,7 @@ jobs:
       - name: Install and Build
         run: |
           npm install
-          npm run build
+          npx electron-builder --win
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
